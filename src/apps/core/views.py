@@ -1,5 +1,3 @@
-import random
-
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -7,7 +5,6 @@ from django.contrib.auth.hashers import check_password
 from django.shortcuts import HttpResponseRedirect, render, redirect
 from django.views.generic import TemplateView
 
-from .constants import HELLO_IN_DIFFERENT_LANGUAGES
 from .forms import SignUpForm
 from .viewmixins import LoginRequiredViewMixin
 
