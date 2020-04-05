@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = get_env_variable('DJANGO_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_env_variable('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -32,8 +32,7 @@ INSTALLED_APPS = [
     
     # Custom Apps
     'apps.core',
-    'apps.resources',
-    'apps.openfoodfacts'
+    'apps.resources'
 ]
 
 MIDDLEWARE = [
