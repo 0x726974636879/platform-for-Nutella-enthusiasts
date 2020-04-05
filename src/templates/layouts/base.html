@@ -6,6 +6,9 @@
         <meta name="description" content="Pure beurre app" />
         <meta name="author" content="RITCHY BLEZIN" />
         <title>Pure beurre</title>
+        {% load static %}
+        <link rel="shortcut icon" href="{% static 'logos/favicon.ico' %}" type="image/x-icon">
+        <link rel="icon" href="{% static 'logos/favicon.ico' %}" type="image/x-icon">
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -14,7 +17,6 @@
         <!-- Third party plugin CSS-->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        {% load static %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body id="page-top">
