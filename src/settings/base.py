@@ -121,3 +121,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     "src/static",
 ]
+
+
+# Login urls
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login'
