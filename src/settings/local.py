@@ -1,4 +1,4 @@
 from .base import *
 
-DEBUG = True
+DEBUG = get_env_variable('DEBUG')
 ALLOWED_HOSTS = ['*']
