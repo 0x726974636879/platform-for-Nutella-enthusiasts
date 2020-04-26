@@ -9,7 +9,7 @@ from .forms import SignUpForm
 from .viewmixins import LoginRequiredViewMixin
 
 
-class HomePageView(LoginRequiredViewMixin, TemplateView):
+class HomePageView(TemplateView):
     template_name = "core/index.html"
 
 class LoginPageView(TemplateView):
@@ -69,8 +69,8 @@ class SignUpView(TemplateView):
             return redirect('home')
         return render(request, self.template_name, {'form': form})
 
-class LegalMentionsView(LoginRequiredViewMixin, TemplateView):
+class LegalMentionsView(TemplateView):
     template_name = "core/legal_mentions.html"
 
-class ContactUsView(LoginRequiredViewMixin, TemplateView):
+class ContactUsView(TemplateView):
     template_name = "core/contact_us.html"
