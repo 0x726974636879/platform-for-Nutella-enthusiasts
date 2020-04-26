@@ -72,5 +72,3 @@ class SignUpView(TemplateView):
 class LegalMentionsView(TemplateView):
     template_name = "core/legal_mentions.html"
 
-class ContactUsView(TemplateView):
-    template_name = "core/contact_us.html"
