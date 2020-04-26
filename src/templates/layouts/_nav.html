@@ -10,16 +10,14 @@
             <ul class="navbar-nav ml-auto my-2 my-lg-0">
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin">Admin</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin"><i class="fa fa-unlock-alt fa-2x" aria-hidden="true"></i></a></li>
                     {% endif %}
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#">Mon compte</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Se déconnecter</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#"><i class="fas fa-user fa-2x"></i></a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#"><i class="fas fa-carrot fa-2x"></i></a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">Se connecter</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="{% url 'signup' %}">S'inscrire</a>
+                        <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">Se connecter/S'inscrire</a>
                     </li>
                 {% endif %}
             </ul>
