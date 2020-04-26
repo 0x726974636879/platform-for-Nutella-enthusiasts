@@ -8,6 +8,14 @@
         </a>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                <form class="form-inline" action="" method="get">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% for field in form %}
+                            {{ field }}
+                        {% endfor %}
+                    </div>
+                </form>
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin"><i class="fa fa-unlock-alt fa-2x" aria-hidden="true"></i></a></li>
