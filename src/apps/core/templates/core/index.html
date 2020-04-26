@@ -11,8 +11,19 @@
                     <hr class="divider my-4" />
                 </div>
                 <div class="col-12 align-self-baseline">
-                    <h2 class="text-white-75 font-weight-light mb-5">Trouvez un produit de substitution pour ceux que vous consommez tous les jours.</h2>
+                    <h2 class="text-white-75 font-weight-light mb-5">
+                        Trouvez un produit de substitution pour ceux que vous consommez tous les jours.
+                    </h2>
                     <hr class="divider my-4" />
+                    <form class="form-inline justify-content-center" action="" method="get">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {% for field in form %}
+                                {{ field }}
+                            {% endfor %}
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Chercher">
+                    </form>
                 </div>
             </div>
         </div>
@@ -27,7 +38,10 @@
             </div>
             <div class="row my-4 text-center">
                 <div class="col-12 row justify-content-center">
-                    <h2 class="text-center col-lg-6 text-white-25 font-weight-light blockquote-footer">Pur Beurre est l'initiative de deux amoureux de la gastronomie française, Colette Tatou et Rémy, que vous avez déjà certainement rencontrés dans notre excellent restaurant Ratatouille. </h2>
+                    <h2 class="text-center col-lg-6 text-white-25 font-weight-light blockquote-footer">
+                        Pur Beurre est l'initiative de deux amoureux de la gastronomie française,
+                        Colette Tatou et Rémy, que vous avez déjà certainement rencontrés dans notre excellent restaurant Ratatouille.
+                    </h2>
                 </div>
             </div>
             <div class="row no-gutters">
