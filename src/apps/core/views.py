@@ -49,7 +49,7 @@ class LogoutView(TemplateView):
         Override get method to logout the user.
         """
         logout(request)
-        return render(request, self.template_name)
+        return redirect('home')
 
 
 class SignUpView(TemplateView):
