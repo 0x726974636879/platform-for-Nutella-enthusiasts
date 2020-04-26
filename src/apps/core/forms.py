@@ -29,5 +29,10 @@ class ProductSearchForm(forms.Form):
         max_length=100,
         min_length=2,
         required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Chercher'
+            }
+        )
     )
