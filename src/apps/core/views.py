@@ -35,7 +35,6 @@ class LoginPageView(FormView):
             # Get the user.
             try:
                 user = User.objects.get(email=email)
-                print(1)
             except User.DoesNotExist:
                 error_msg = "L'adresse email renseignée n'est pas valide."
                 form.add_error("email", error_msg)
