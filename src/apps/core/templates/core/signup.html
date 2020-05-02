@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+    <div class="page-section bg-info">
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center container ">
+                <div class="row w-75">
+                    <h1></h1>
+                    <form action="{% url 'signup' %}" method="POST" class="col-12 mb-4">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group">
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                                <label for="{{ field.name }}">{{ field.label }}</label>
+                                {{ field }}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">S'inscrire</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
