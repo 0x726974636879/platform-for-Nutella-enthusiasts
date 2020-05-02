@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+
+{% load static %}
+{% block content %}
+    <div class="page-section bg-info">
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center container ">
+                <div class="row  w-75">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    <form
+                        action="{% url 'login' %}"
+                        class="col-12 mb-4 border border-light rounded px-4 py-4"
+                        method="POST"
+                    >
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label for="{{ field.name }}">{{ field.label }}</label>
+                                {{ field }}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Se connecter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
