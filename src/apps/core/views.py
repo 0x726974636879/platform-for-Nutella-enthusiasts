@@ -62,7 +62,7 @@ class LogoutView(TemplateView):
         Override get method to logout the user.
         """
         logout(request)
-        return redirect("home")
+        return redirect("core:home")
 
 
 class SignUpView(FormView):
