@@ -29,10 +29,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # External apps
-    
+
     # Custom Apps
     'apps.core',
-    'apps.resources'
+    'apps.openfoodfacts',
 ]
 
 MIDDLEWARE = [
