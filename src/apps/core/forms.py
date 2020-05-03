@@ -20,6 +20,7 @@ class LoginForm(forms.Form):
         )
     )
 
+
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
         help_text='Entrez votre pseudo.',
