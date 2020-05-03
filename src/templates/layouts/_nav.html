@@ -6,10 +6,13 @@
             <img class="img-thumbnail" src="{% static 'logos/logo_pur_beurre.png' %}" alt="colette" />
             Pure beurre
         </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto my-2 my-lg-0">
                 {% if request.resolver_match.url_name == "home" %}
-                    <form class="form-inline" action="" method="get">
+                    <form class="form-inline" action="{% url 'openfoodfacts:product' %}" method="POST">
                         {% csrf_token %}
                         {% for field in form %}
                             <div class="form-group">
@@ -20,18 +23,18 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin"><i class="fa fa-unlock-alt fa-2x" aria-hidden="true"></i></a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin"><i class="fa fa-user-shield fa-2x" aria-hidden="true"></i></a></li>
                     {% endif %}
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#"><i class="fas fa-user fa-2x"></i></a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#"><i class="fas fa-carrot fa-2x"></i></a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'core:logout' %}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
                 {% else %}
                     <li class="nav-item">
                         {% if request.resolver_match.url_name != "login" %}
-                            <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">Se connecter</a>
+                            <a class="nav-link js-scroll-trigger" href="{% url 'core:login' %}">Se connecter</a>
                         {% endif %}
                         {% if request.resolver_match.url_name != "signup" %}
-                            <a class="nav-link js-scroll-trigger" href="{% url 'signup' %}">S'inscrire</a>
+                            <a class="nav-link js-scroll-trigger" href="{% url 'core:signup' %}">S'inscrire</a>
                         {% endif %}
                     </li>
                 {% endif %}
