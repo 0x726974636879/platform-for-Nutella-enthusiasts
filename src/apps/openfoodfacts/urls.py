@@ -5,8 +5,18 @@ app_name = "openfoodfacts"
 
 urlpatterns = [
     path(
-        "search_product/",
-        views.SearchProductView.as_view(),
-        name="search_product"
+        "products/<int:pk>",
+        views.ShowProductView.as_view(),
+        name="products_list"
     ),
+    path(
+        "products/search/",
+        views.SearchProductView.as_view(),
+        name="products_search"
+    ),
+    path(
+        "products/saved/",
+        views.SavedProductsListView.as_view(),
+        name="products_saved"
+    )
 ]
