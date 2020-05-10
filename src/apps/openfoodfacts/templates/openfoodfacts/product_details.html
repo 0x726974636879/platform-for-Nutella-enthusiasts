@@ -23,7 +23,7 @@
             {% for sub in substitutes %}
                 <div class="col-md-4 mb-3">
                     <div class="thumbnail">
-                        <a href="{% url 'openfoodfacts:search_product' %}">
+                        <a href="{% url 'openfoodfacts:products_list' sub.pk %}">
                             <img
                                 {% if not sub.img_url%}
                                     src="{% static 'divers/no-product-image.png' %}"
@@ -35,7 +35,7 @@
                             />
                         </a>
                         <div class="caption text-center">
-                            <p>{{ sub.product_name }}</p>
+                            <p>{{ sub.product_name | truncatechars:25 }}</p>
                             {% if user.is_authenticated %}
                                 <a href="#">
                                     <i class="fa fa-hdd-o" aria-hidden="true"></i>
