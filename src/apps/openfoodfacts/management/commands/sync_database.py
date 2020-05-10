@@ -40,7 +40,8 @@ class Command(BaseCommand):
                 Product(
                     product_name=p.get("product_name"),
                     code=p.get("code"),
-                    img_url=p.get("url"),
+                    img_url=p.get("image_url"),
+                    url=p.get("url"),
                     salt=p["nutrient_levels"].get("salt"),
                     fat=p["nutrient_levels"].get("fat"),
                     sugars=p["nutrient_levels"].get("sugars"),
