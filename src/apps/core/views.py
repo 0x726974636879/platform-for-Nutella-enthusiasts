@@ -84,7 +84,7 @@ class SignUpView(FormView):
                 password=form.cleaned_data.get("password1")
             )
             login(request, user)
-            return redirect("home")
+            return redirect("core:home")
         return render(request, self.template_name, {"form": form})
 
 
