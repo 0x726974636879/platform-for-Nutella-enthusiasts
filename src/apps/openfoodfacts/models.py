@@ -36,25 +36,26 @@ class Product(models.Model):
         return self.product_name
 
     @classmethod
-    def get_substitutes(cls, category_id):
+    def get_substitutes(cls, product_id):
         """
         Get a list of better products than the one chosen.
 
         Parameters
         ----------
-        category_id : int
-            Product category identifier.
+        product_id : int
+            Product identifier.
 
         Returns
         -------
-        products: tuple
+        products: list
             List of products that can replace the selected product.
         """
         # Get products from a category sorted by nutrition grades.
         col_name = "nutrition_grades"
-        products = tuple(
-            cls.objects.filter(category=category_id).order_by(col_name)[:12]
-        )
+        category_id = int(cls.objects.get(pk=product_id).category.id)
+        products = cls.objects\
+            .filter(category=category_id)\
+            .order_by(col_name)[:12]
         return products
 
 
