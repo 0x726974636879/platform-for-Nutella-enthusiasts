@@ -18,7 +18,7 @@
                 <div class="tab-content" id="nav-tabContent">
                     {% for obj in object_list %}
                         <div class="tab-pane fade" id="list-{{ obj.code }}" role="tabpanel" aria-labelledby="list-{{ obj.code }}-list">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 36rem;">
                                 <img class="card-img-top" src="{{ obj.img_url }}" alt="{{ obj.product_name }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ obj.product_name }}</h5>
