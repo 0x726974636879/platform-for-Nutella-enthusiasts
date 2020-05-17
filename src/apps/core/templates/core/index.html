@@ -15,7 +15,7 @@
                         Trouvez un produit de substitution pour ceux que vous consommez tous les jours.
                     </h2>
                     <hr class="divider my-4" />
-                    <form class="form-inline justify-content-center" action="{% url 'openfoodfacts:products_search' %}" method="GET">
+                    <form class="form-inline justify-content-center" action="{% url 'resources:products_search' %}" method="GET">
                         {% csrf_token %}
                         <div class="form-group">
                             {% for field in form %}
