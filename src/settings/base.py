@@ -32,7 +32,7 @@ INSTALLED_APPS = [
 
     # Custom Apps
     'apps.core',
-    'apps.openfoodfacts',
+    'apps.resources',
 ]
 
 MIDDLEWARE = [

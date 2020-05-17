@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                 ('warehouse', models.CharField(blank=True, max_length=400, null=True)),
                 ('allergens', models.CharField(blank=True, max_length=400, null=True)),
                 ('nutrition_grades', models.CharField(max_length=1)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='openfoodfacts.Category')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='resources.Category')),
             ],
         ),
         migrations.CreateModel(

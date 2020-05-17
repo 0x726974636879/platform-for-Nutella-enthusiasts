@@ -4,8 +4,8 @@ import requests
 
 from django.core.management.base import BaseCommand
 
-from apps.openfoodfacts.constants import CATEGORIES_URL
-from apps.openfoodfacts.models import Category, Product
+from apps.resources.constants import CATEGORIES_URL
+from apps.resources.models import Category, Product
 
 
 class Command(BaseCommand):

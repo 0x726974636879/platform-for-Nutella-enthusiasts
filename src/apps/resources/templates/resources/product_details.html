@@ -26,7 +26,7 @@
                 {% for sub in substitutes %}
                     <div class="col-md-4 mb-3">
                         <div class="thumbnail text-center">
-                            <a href="{% url 'openfoodfacts:products_list' sub.pk %}">
+                            <a href="{% url 'resources:products_list' sub.pk %}">
                                 <img
                                     {% if not sub.img_url%}
                                         src="{% static 'images/divers/no-product-image.png' %}"
@@ -40,7 +40,7 @@
                             <div class="caption text-center">
                                 <p>{{ sub.product_name | truncatechars:25 }}</p>
                                 {% if user.is_authenticated %}
-                                    <form class="row" method="POST" action="{% url 'openfoodfacts:products_save' %}">
+                                    <form class="row" method="POST" action="{% url 'resources:products_save' %}">
                                         <input type="hidden" name="product_id" value="{{ sub.pk }}" />
                                         <button class="btn btn-link col-6 offset-3" type="submit">
                                             <i class="fa fa-save text-primary" aria-hidden="true"></i>
