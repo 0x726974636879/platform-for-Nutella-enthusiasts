@@ -25,7 +25,7 @@
                 {% for sub in substitutes %}
                     <div class="col-md-4 mb-3">
                         <div class="thumbnail text-center">
-                            <a href="{% url 'resources:products_list' sub.pk %}">
+                            <a class="d-block border" href="{% url 'resources:products_list' sub.pk %}">
                                 <img
                                     {% if not sub.img_url%}
                                         src="{% static 'images/divers/no-product-image.png' %}"
@@ -47,6 +47,17 @@
                                             Sauvegarder
                                         </button>
                                     </form>
+                                {% endif %}
+                                {% if sub.nutrition_grades == 'a' %}
+                                    <p class="position-relative float-right bg-success font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                {% elif sub.nutrition_grades == 'b' %}
+                                    <p class="position-relative float-right bg-teal font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                {% elif sub.nutrition_grades == 'c' %}
+                                    <p class="position-relative float-right bg-warning font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                {% elif sub.nutrition_grades == 'd' %}
+                                    <p class="position-relative float-right bg-primary font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                {% else %}
+                                    <p class="position-relative float-right bg-danger font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
                                 {% endif %}
                             </div>
                         </div>
