@@ -51,11 +51,10 @@ class Product(models.Model):
             List of products that can replace the selected product.
         """
         # Get products from a category sorted by nutrition grades.
-        col_name = "nutrition_grades"
         category_id = int(cls.objects.get(pk=product_id).category.id)
         products = cls.objects\
             .filter(category=category_id)\
-            .order_by(col_name)[:12]
+            .order_by("nutrition_grades")[:12]
         return products
 
 
