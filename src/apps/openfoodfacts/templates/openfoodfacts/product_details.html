@@ -29,7 +29,7 @@
                             <a href="{% url 'openfoodfacts:products_list' sub.pk %}">
                                 <img
                                     {% if not sub.img_url%}
-                                        src="{% static 'divers/no-product-image.png' %}"
+                                        src="{% static 'images/divers/no-product-image.png' %}"
                                     {% else %}
                                         src="{{ sub.img_url }}"
                                     {% endif %}
