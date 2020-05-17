@@ -18,7 +18,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('apps.core.urls'), name='core'),
-    path('', include('apps.openfoodfacts.urls'), name='openfoodfacts'),
+    path('', include('apps.resources.urls'), name='resources'),
 ]
 
 
