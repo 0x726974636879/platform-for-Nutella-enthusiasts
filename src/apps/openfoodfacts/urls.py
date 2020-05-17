@@ -5,7 +5,7 @@ app_name = "openfoodfacts"
 
 urlpatterns = [
     path(
-        "products/<int:pk>",
+        "products/<int:pk>/",
         views.ShowProductView.as_view(),
         name="products_list"
     ),
@@ -18,5 +18,10 @@ urlpatterns = [
         "products/saved/",
         views.SavedProductsListView.as_view(),
         name="products_saved"
+    ),
+    path(
+        "products/save/",
+        views.SaveProductView.as_view(),
+        name="products_save"
     )
 ]
