@@ -25,10 +25,10 @@ class SearchProductView(View):
         # word.
         product = Product.objects.filter(
             Q(product_name__startswith=word) | Q(product_name__contains=word)
-        ).order_by("product_name").first()
+        ).first()
         if product:
             return redirect("resources:products_list", pk=product.id)
-        return redirect("resources:products_list", no_products=True)
+        return redirect("core:home")
 
 
 class ShowProductView(DetailView):
