@@ -70,6 +70,7 @@ class ProfilView(TemplateView):
     """
     template_name = "core/profil.html"
 
+
 class SignUpView(FormView):
     """
     Sign up page view.
