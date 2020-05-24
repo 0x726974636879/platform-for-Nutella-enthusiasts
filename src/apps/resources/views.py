@@ -8,7 +8,7 @@ from django.views.generic import (
 )
 
 from .constants import PRODUCTS_URL
-from .models import Category , BackupProduct, Product
+from .models import Category, BackupProduct, Product
 
 
 class SearchProductView(View):
@@ -28,7 +28,7 @@ class SearchProductView(View):
         ).first()
         if product:
             return redirect("resources:products_list", pk=product.id)
-        return redirect("core:home")
+        return render(request, "core/index.html", {"product_not_found": word})
 
 
 class ShowProductView(DetailView):
