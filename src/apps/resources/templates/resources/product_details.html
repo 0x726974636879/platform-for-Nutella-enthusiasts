@@ -49,15 +49,15 @@
                                     </form>
                                 {% endif %}
                                 {% if sub.nutrition_grades == 'a' %}
-                                    <p class="position-relative float-right bg-success font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                    <p class="position-absolute sticky-top bg-success font-weight-bold border p-2 rounded-circle" style="right: 15px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
                                 {% elif sub.nutrition_grades == 'b' %}
-                                    <p class="position-relative float-right font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important; background-color: #85bb2f;">{{ sub.nutrition_grades|upper }}</p>
+                                    <p class="position-absolute sticky-top font-weight-bold border p-2 rounded-circle" style="right: 15px; border-width:3px !important; background-color: #85bb2f;">{{ sub.nutrition_grades|upper }}</p>
                                 {% elif sub.nutrition_grades == 'c' %}
-                                    <p class="position-relative float-right bg-warning font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                    <p class="position-absolute sticky-top bg-warning font-weight-bold border p-2 rounded-circle" style="right: 15px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
                                 {% elif sub.nutrition_grades == 'd' %}
-                                    <p class="position-relative float-right bg-primary font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                    <p class="position-absolute sticky-top bg-primary font-weight-bold border p-2 rounded-circle" style="right: 15px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
                                 {% else %}
-                                    <p class="position-relative float-right bg-danger font-weight-bold border p-2 rounded-circle" style="bottom: 340px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
+                                    <p class="position-absolute sticky-top bg-danger font-weight-bold border p-2 rounded-circle" style="right: 15px; border-width:3px !important;">{{ sub.nutrition_grades|upper }}</p>
                                 {% endif %}
                             </div>
                         </div>
