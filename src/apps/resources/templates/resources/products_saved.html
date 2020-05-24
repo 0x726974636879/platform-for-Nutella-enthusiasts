@@ -3,43 +3,46 @@
 {% load static %}
 {% block content %}
 <section class="page-section bg-dark text-white">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-4">
-                <div class="list-group" id="list-tab" role="tablist">
-                    {% for obj in object_list %}
-                        <a class="list-group-item list-group-item-action" id="list-{{obj.code}}-list" data-toggle="list" href="#list-{{ obj.code }}" role="tab" aria-controls="{{ obj.code }}">
-                            {{ obj.product_name }}
-                        </a>
-                    {% endfor %}
-                </div>
+    <div class="container">
+        <div class="row text-center text-white mb-5">
+            <div class="col-lg-7 mx-auto">
+                <h1 class="display-4">Mes aliments enregistrés</h1>
             </div>
-            <div class="col-8">
-                <div class="tab-content" id="nav-tabContent">
-                    {% for obj in object_list %}
-                        <div class="tab-pane fade" id="list-{{ obj.code }}" role="tabpanel" aria-labelledby="list-{{ obj.code }}-list">
-                            <div class="card" style="width: 36rem;">
-                                <img class="card-img-top" src="{{ obj.img_url }}" alt="{{ obj.product_name }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ obj.product_name }}</h5>
-                                    <p class="card-text text-dark">Code: {{ obj.code }}</p>
-                                    <p class="card-text text-dark">Teneur en sel: {{ obj.salt }}</p>
-                                    <p class="card-text text-dark">Teneur en graisse: {{ obj.fat }}</p>
-                                    <p class="card-text text-dark">Teneur en sucre: {{ obj.sugars }}</p>
-                                    <p class="card-text text-dark">Teneur en graisse saturée: {{ obj.saturated_fat }}</p>
-                                    <p class="card-text text-dark">Où le trouver le produit: {{ obj.warehouse }}</p>
-                                    <p class="card-text text-dark">Allergens: {{ obj.allergens }}</p>
-                                    <p class="card-text text-dark">
-                                        <img src="{% static 'images/nutriscore-grades/nutriscore-'|add:obj.nutrition_grades|add:'.svg' %}" alt="nutriscore-{{ obj.nutrition_grades }}" />
-                                    </p>
-                                    <a href="{{ obj.url }}" class="btn btn-primary">Lien vers le produit</a>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- List group-->
+                <ul class="list-group shadow">
+                    <!-- list group item-->
+                {% for obj in object_list %}
+                    <li class="list-group-item">
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                            <div class="media-body order-2 order-lg-1">
+                                <h5 class="mt-0 font-weight-bold mb-2">{{ obj.product_name }}</h5>
+                                <p class="font-italic text-muted mb-0 small">Code: {{ obj.code }}</p>
+                                <p class="font-italic text-muted mb-0 small">Teneur en sel: {{ obj.salt }}</p>
+                                <p class="font-italic text-muted mb-0 small">Teneur en graisse: {{ obj.fat }}</p>
+                                <p class="font-italic text-muted mb-0 small">Teneur en sucre: {{ obj.sugars }}</p>
+                                <p class="font-italic text-muted mb-0 small">Teneur en graisse saturée: {{ obj.saturated_fat }}</p>
+                                <p class="font-italic text-muted mb-0 small">Où le trouver le produit: {{ obj.warehouse }}</p>
+                                <p class="font-italic text-muted mb-0 small">Allergens: {{ obj.allergens }}</p>
+                                <div class="d-flex align-items-center justify-content-between mt-1">
+                                    {% if obj.id != "NID" %}
+                                        <a href="{% url 'resources:products_list' obj.id %}" class="font-weight-bold my-2 text-dark">Voir la fiche produit</a>
+                                    {% else %}
+                                        <p class="text-dark m-0">Aucune fiche produit disponible</p>
+                                    {% endif %}
+                                    <img style="width: 150px" src="{% static 'images/nutriscore-grades/nutriscore-'|add:obj.nutrition_grades|add:'.svg' %}" alt="nutriscore-{{ obj.nutrition_grades }}" />
                                 </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                            </div><img src="{{ obj.img_url }}" alt="{{ obj.product_name }}" width="140" height="170" class="ml-lg-5 order-1 order-lg-2">
+                        </div> <!-- End -->
+                    </li> <!-- End -->
+                {% endfor %}
+                </ul> <!-- End -->
             </div>
         </div>
     </div>
 </section>
 {% endblock content %}
+
