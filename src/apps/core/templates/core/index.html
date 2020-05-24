@@ -4,6 +4,14 @@
 {% block content %}
     <!-- Masthead-->
     <header class="masthead h-100">
+        {% if product_not_found %}
+            <div class="position-absolute position-fixed alert alert-danger alert-dismissible fade show" style="left:30%; right:30%; z-index:99999; word-wrap:break-word;" role="alert">
+                <strong>Holy guacamole!</strong> Aucun produit trouvé avec <br /><br />{{ product_not_found }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
         <div class="container h-100">
             <div class="row h-100 align-items-center justify-content-center text-center">
                 <div class="col-12 align-self-end">
