@@ -4,12 +4,14 @@
 {% block content %}
 <section class="page-section bg-dark text-white" style="background-image: url('{{ product.img_url }}'); background-position: center center;">
     <div class="container text-center" >
-        <h2 class="text-dark mb-4 bg-white">{{ product.product_name }}</h2>
-        <div class="row">
+        <div class="row bg-white mb-4 rounded">
+            <div class="col-12">
+                <h2 class="text-dark mb-4">{{ product.product_name }}</h2>
+            </div>
             <div class="col-4">
                 <img src="{% static 'images/nutriscore-grades/nutriscore-'|add:product.nutrition_grades|add:'.svg' %}" alt="nutriscore-{{ product.nutrition_grades }}" />
             </div>
-            <p class="col-4 offset-4 mt-auto mb-auto text-dark bg-white">Repères nutritionnels pour 100g</p>
+            <p class="col-4 offset-4 mt-auto mb-auto text-dark">Repères nutritionnels pour 100g</p>
         </div>
         <div class="row">
             <div class="col-12 text-center">
