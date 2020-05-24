@@ -64,6 +64,12 @@ class LogoutView(TemplateView):
         return redirect("core:home")
 
 
+class ProfilView(TemplateView):
+    """
+    Profil page view.
+    """
+    template_name = "core/profil.html"
+
 class SignUpView(FormView):
     """
     Sign up page view.
