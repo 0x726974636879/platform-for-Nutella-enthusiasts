@@ -115,8 +115,13 @@ class SaveProductView(View):
         """
         current_user = self.request.user
         product = Product.objects.get(pk=self.request.POST.get("product_id"))
-        bp = BackupProduct.objects.create(
-            product_code=product.code, user=current_user
-        )
-        bp.save()
+        user_saved_products = BackupProduct\
+            .objects\
+            .filter(user=current_user)\
+            .values_list("product_code", flat=True)
+        if product.code not in user_saved_products:
+            bp = BackupProduct.objects.create(
+                product_code=product.code, user=current_user
+            )
+            bp.save()
         return redirect("resources:products_list", pk=product.id)
