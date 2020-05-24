@@ -63,6 +63,7 @@ class BackupProduct(models.Model):
     History model.
     """
     product_code = models.CharField(max_length=30)
+    category_name = models.CharField(max_length=400)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def __str__(self):
