@@ -78,19 +78,3 @@ class SignUpForm(UserCreationForm):
             'username', 'first_name', 'last_name', 'email', 'password1',
             'password2'
         )
-
-
-class ProductSearchForm(forms.Form):
-    word = forms.CharField(
-        help_text='Nom du produit.',
-        label="Nom du produit",
-        max_length=100,
-        min_length=2,
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Chercher un produit'
-            }
-        )
-    )
