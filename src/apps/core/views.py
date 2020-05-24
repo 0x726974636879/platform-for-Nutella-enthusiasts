@@ -5,15 +5,14 @@ from django.shortcuts import HttpResponseRedirect, render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
-from .forms import LoginForm, ProductSearchForm, SignUpForm
+from .forms import LoginForm, SignUpForm
 
 
-class HomePageView(FormView):
+class HomePageView(TemplateView):
     """
     Home page view.
     """
     template_name = "core/index.html"
-    form_class = ProductSearchForm
 
 
 class LoginPageView(FormView):
