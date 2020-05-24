@@ -11,14 +11,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto my-2 my-lg-0">
-                {% if request.resolver_match.url_name == "home" %}
+                {% if request.resolver_match.url_name != "login" and request.resolver_match.url_name != "signup" %}
                     <form class="form-inline" action="{% url 'resources:products_search' %}" method="GET">
                         {% csrf_token %}
-                        {% for field in form %}
+                        <form class="form-inline" action="{% url 'resources:products_search' %}" method="GET">
+                            {% csrf_token %}
                             <div class="form-group">
-                                {{ field }}
+                                <input class="form-control" type="text" name="word" minlength="2" maxlength="100" placeholder="Nom du produit recherché">
                             </div>
-                        {% endfor %}
+                        </form>
                     </form>
                 {% endif %}
                 {% if user.is_authenticated %}
