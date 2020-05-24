@@ -8,7 +8,7 @@ from django.views.generic import (
 )
 
 from .constants import PRODUCTS_URL
-from .models import Product, BackupProduct
+from .models import Category , BackupProduct, Product
 
 
 class SearchProductView(View):
@@ -68,22 +68,26 @@ class SavedProductsListView(ListView):
         object_list = []
         for p in queryset:
             try:
-                product = Product.objects.get(code=p.product_code)
+                product = Product.objects.get(
+                    code=p.product_code,
+                    category=Category.objects.get(name=p.category_name)
+                )
                 object_list.append({
                     "id": product.id,
-                    "product_name": product["product_name"],
+                    "product_name": product.product_name,
                     "code": p.product_code,
-                    "img_url": product["image_url"],
-                    "url": product["url"],
-                    "salt": product["salt"],
-                    "fat": product["fat"],
-                    "sugars": product["sugars"],
-                    "saturated_fat": product["saturated-fat"],
-                    "warehouse": product["brands"],
-                    "allergens": product["allergens"],
-                    "nutrition_grades": product["nutrition_grades"]
+                    "img_url": product.img_url,
+                    "url": product.url,
+                    "salt": product.salt,
+                    "fat": product.fat,
+                    "sugars": product.sugars,
+                    "saturated_fat": product.saturated_fat,
+                    "warehouse": product.warehouse,
+                    "allergens": product.allergens,
+                    "nutrition_grades": product.nutrition_grades
                 })
-            except Exception:
+            except Exception as e:
+                print("Error =>", e)
                 response = requests.get(f"{PRODUCTS_URL}{p.product_code}.json")
                 if response.status_code == 200:
                     r_json = response.json()["product"]
@@ -121,7 +125,9 @@ class SaveProductView(View):
             .values_list("product_code", flat=True)
         if product.code not in user_saved_products:
             bp = BackupProduct.objects.create(
-                product_code=product.code, user=current_user
+                product_code=product.code,
+                user=current_user,
+                category_name=product.category.name
             )
             bp.save()
         return redirect("resources:products_list", pk=product.id)
