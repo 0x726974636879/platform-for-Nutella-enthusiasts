@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import HttpResponseRedirect, render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+from django.urls import reverse
 
 from .forms import LoginForm, SignUpForm
 
@@ -21,6 +23,15 @@ class LoginPageView(FormView):
     """
     form_class = LoginForm
     template_name = "core/login.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Override dispatch method to redirect user if a user attempts to
+        get the login page when the user is already logged.
+        """
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("core:home"))
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, **kwargs):
         """
@@ -64,7 +75,7 @@ class LogoutView(TemplateView):
         return redirect("core:home")
 
 
-class ProfilView(TemplateView):
+class ProfilView(LoginRequiredMixin, TemplateView):
     """
     Profil page view.
     """
