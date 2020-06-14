@@ -1,11 +1,8 @@
 import requests
 
-
 from django.db.models import Q
 from django.shortcuts import redirect, render
-from django.views.generic import (
-    DetailView, ListView, View
-)
+from django.views.generic import DetailView, ListView, View
 
 from .constants import PRODUCTS_URL
 from .models import Category, BackupProduct, Product
