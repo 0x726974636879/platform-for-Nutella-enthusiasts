@@ -130,3 +130,6 @@ dmypy.json
 
 # Apple meta files
 .DS_Store
+
+# static files
+static/
