@@ -1,5 +1,6 @@
 import os
 
+
 def get_env_variable(var_name):
     """
     Get the environment variable or return exception.
@@ -21,4 +22,4 @@ def get_env_variable(var_name):
     try:
         return os.environ[var_name]
     except KeyError:
-        raise ValueError(f'Set the {var_name} environment variable.')
+        raise ValueError(f"Set the {var_name} environment variable.")
