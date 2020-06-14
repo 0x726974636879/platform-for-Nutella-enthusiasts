@@ -37,10 +37,10 @@ class ShowProductView(DetailView):
         Override GET method to make a request to find some substitutes.
         """
         # Get a list of better products than the one shown.
-        substitutes = self.model.get_substitutes(kwargs.get("pk"))
+        pk = kwargs.get("pk")
+        substitutes = self.model.get_substitutes(pk)
         context = {
-            "product": Product.objects.get(pk=kwargs.get("pk")),
-            "substitutes": substitutes
+            "product": Product.objects.get(pk=pk), "substitutes": substitutes
         }
         return render(request, self.template_name, context)
 
