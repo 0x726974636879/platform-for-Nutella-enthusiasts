@@ -27,9 +27,16 @@ def random_string(string_length=8):
     return ''.join(random.choice(letters) for i in range(string_length))
 
 
-def fill_database(nb_product):
+def create_products(nb_product):
     """
+    Create x products with x categories.
+
+    Parameters
+    ----------
+    nb_product : int
+        Number of products you wish to create
     """
+    grades = ('a', 'b', 'c', 'd', 'e')
     category = Category.objects.create(name="category_a")
     products = []
     for _ in range(nb_product):
@@ -45,9 +52,7 @@ def fill_database(nb_product):
                 saturated_fat=random_string(),
                 warehouse=random_string(100),
                 allergens=random_string(100),
-                nutrition_grades=random.choice(
-                    ('a', 'b', 'c', 'd', 'e')
-                ),
+                nutrition_grades=random.choice(grades),
                 category=category
             )
         )
@@ -80,7 +85,7 @@ class ProductModelTest(TestCase):
         """
         Create X product to a category.
         """
-        fill_database(1000)
+        create_products(1000)
 
     def test_product_name_label(self):
         product = Product.objects.order_by('?').first()
@@ -218,7 +223,7 @@ class ProductModelTest(TestCase):
 class BackupProductTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        fill_database(1000)
+        create_products(1000)
         credentials = {
             "username": "testuser1",
             "email": "testuser1@free.fr",
