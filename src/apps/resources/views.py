@@ -1,7 +1,8 @@
 import requests
 
 from django.db.models import Q
-from django.shortcuts import redirect, render
+from django.shortcuts import HttpResponseRedirect, redirect, render
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, View
 
 from .constants import PRODUCTS_URL
@@ -16,16 +17,20 @@ class SearchProductView(View):
         """
         Override GET method to make a request to find the product.
         """
-        word = request.GET.get("word")
-        # Get a product that starts with the given word if no product
-        # has been found take a product whose name contains the given
-        # word.
-        product = Product.objects.filter(
-            Q(product_name__startswith=word) | Q(product_name__contains=word)
-        ).first()
-        if product:
-            return redirect("resources:products_list", pk=product.id)
-        return render(request, "core/index.html", {"product_not_found": word})
+        word = request.GET.get("word", "")
+        if word:
+            # Get a product that starts with the given word if no product
+            # has been found take a product whose name contains the given
+            # word.
+            product = Product.objects.filter(
+                Q(product_name__startswith=word)
+                | Q(product_name__contains=word)
+            ).first()
+            if product:
+                return redirect("resources:products_list", pk=product.id)
+        return render(
+            request, "core/index.html", {"product_not_found": word}, status=301
+        )
 
 
 class ShowProductView(DetailView):
@@ -50,6 +55,15 @@ class SavedProductsListView(ListView):
     Saved products page view.
     """
     template_name = "resources/products_saved.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Override dispatch method to redirect user if a user attempts to
+        get the saved products page when the user is not logged.
+        """
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("core:home"))
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         """
