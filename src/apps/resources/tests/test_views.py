@@ -144,18 +144,21 @@ class ShowProductViewViewTest(TestCase):
         create_products(10)
 
     def test_view_url_exists(self):
-        response = self.client.get("/products/1/")
+        product_id = Product.objects.order_by('?').first().id
+        response = self.client.get(f"/products/{product_id}/")
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
+        product_id = Product.objects.order_by('?').first().id
         response = self.client.get(
-            reverse("resources:products_list", args=['1'])
+            reverse("resources:products_list", args=[product_id])
         )
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
+        product_id = Product.objects.order_by('?').first().id
         response = self.client.get(
-            reverse("resources:products_list", args=['1'])
+            reverse("resources:products_list", args=[product_id])
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "resources/product_details.html")
