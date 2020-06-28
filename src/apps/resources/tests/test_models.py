@@ -212,10 +212,15 @@ class ProductModelTest(TestCase):
         self.assertEquals(substitutes.count(), 12)
 
     def test_substitute_order(self):
-        product = Product.objects.filter(nutrition_grades='e').first()
-        substitutes = list(Product.get_substitutes(product.id))
+        product_id = Product.objects.filter(nutrition_grades='e').first().id
+        substitutes = list(Product.get_substitutes(product_id))
         self.assertEqual(
-            list(Product.objects.order_by("nutrition_grades")[:12]),
+            list(
+                Product
+                .objects
+                .exclude(id=product_id)
+                .order_by("nutrition_grades")[:12]
+            ),
             substitutes
         )
 
