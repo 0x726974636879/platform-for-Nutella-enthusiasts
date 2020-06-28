@@ -124,16 +124,30 @@ class SaveProductView(View):
     """
     Save a product page view.
     """
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Override dispatch method to redirect user if a user attempts to
+        save a product when the user is not logged.
+        """
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("core:home"))
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         """
-        Override post method to save a product to our favorites.
+        Override post method to save a product to our favorites and
+        prevent the same product from being bookmarked more than once.
         """
         current_user = self.request.user
         product = Product.objects.get(pk=self.request.POST.get("product_id"))
+        # Get all the product code saved by the user.
         user_saved_products = BackupProduct\
             .objects\
             .filter(user=current_user)\
             .values_list("product_code", flat=True)
+        # If the product is not in the list of products saved by the
+        # user then save it.
         if product.code not in user_saved_products:
             bp = BackupProduct.objects.create(
                 product_code=product.code,
@@ -141,4 +155,7 @@ class SaveProductView(View):
                 category_name=product.category.name
             )
             bp.save()
-        return redirect("resources:products_list", pk=product.id)
+        return redirect(
+            "resources:products_list",
+            pk=request._post["product_id"]
+        )
