@@ -1,8 +1,8 @@
 import requests
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import HttpResponseRedirect, redirect, render
-from django.urls import reverse
+from django.shortcuts import redirect, render
 from django.views.generic import DetailView, ListView, View
 
 from .constants import PRODUCTS_URL
@@ -50,20 +50,11 @@ class ShowProductView(DetailView):
         return render(request, self.template_name, context)
 
 
-class SavedProductsListView(ListView):
+class SavedProductsListView(LoginRequiredMixin, ListView):
     """
     Saved products page view.
     """
     template_name = "resources/products_saved.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Override dispatch method to redirect user if a user attempts to
-        get the saved products page when the user is not logged.
-        """
-        if not request.user.is_authenticated:
-            return HttpResponseRedirect(reverse("core:home"))
-        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         """
@@ -120,19 +111,10 @@ class SavedProductsListView(ListView):
         return object_list
 
 
-class SaveProductView(View):
+class SaveProductView(LoginRequiredMixin, View):
     """
     Save a product page view.
     """
-
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Override dispatch method to redirect user if a user attempts to
-        save a product when the user is not logged.
-        """
-        if not request.user.is_authenticated:
-            return HttpResponseRedirect(reverse("core:home"))
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """
