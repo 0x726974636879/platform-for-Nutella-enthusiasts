@@ -54,6 +54,7 @@ class Product(models.Model):
         category_id = int(cls.objects.get(pk=product_id).category.id)
         products = cls.objects\
             .filter(category=category_id)\
+            .exclude(id=product_id)\
             .order_by("nutrition_grades")[:12]
         return products
 
