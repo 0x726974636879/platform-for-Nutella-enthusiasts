@@ -6,13 +6,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.resources.models import Category, BackupProduct, Product
-
-
-credentials = {
-    "username": "testuser1",
-    "email": "testuser1@free.fr",
-    "password": "1X<ISRUkw+tuK"
-}
+from .utils import credentials
 
 
 def random_string(string_length=8):
