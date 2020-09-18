@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from apps.resources.models import Category, BackupProduct, Product
+from .utils import credentials
 
 
 def random_string(string_length=8):
@@ -85,7 +86,7 @@ class ProductModelTest(TestCase):
         """
         Create X product to a category.
         """
-        create_products(1000)
+        create_products(14)
 
     def test_product_name_label(self):
         product = Product.objects.order_by('?').first()
@@ -207,21 +208,50 @@ class ProductModelTest(TestCase):
         self.assertEqual(f"{product.product_name}", str(product))
 
     def test_substitute_list_length(self):
-        product = Product.objects.filter(nutrition_grades='d').first()
+        product = Product.objects.order_by('?').first()
         substitutes = Product.get_substitutes(product.id)
-        self.assertEquals(substitutes.count(), 12)
+        self.assertTrue(substitutes.count() <= 12)
 
-    def test_substitute_order(self):
-        product_id = Product.objects.filter(nutrition_grades='e').first().id
-        substitutes = list(Product.get_substitutes(product_id))
-        self.assertEqual(
-            list(
-                Product
-                .objects
-                .exclude(id=product_id)
-                .order_by("nutrition_grades")[:12]
-            ),
-            substitutes
+    def test_products_saved_not_in_substitutes(self):
+        products = []
+        for p in ["ananas", "banane"]:
+            products.append(
+                Product(
+                    product_name=p,
+                    code=random_string(20),
+                    img_url=random_string(100),
+                    url=random_string(100),
+                    salt=random_string(),
+                    fat=random_string(),
+                    sugars=random_string(),
+                    saturated_fat=random_string(),
+                    warehouse=random_string(100),
+                    allergens=random_string(100),
+                    nutrition_grades='a',
+                    category=Category.objects.get(name="category_a")
+                )
+            )
+        Product.objects.bulk_create(products)
+        # Create a user.
+        test_user1 = User.objects.create_user(**credentials)
+        test_user1.save()
+        # Log in.
+        self.client.login(
+            email=credentials["email"], password=credentials["password"]
+        )
+        # Save a product.
+        product = Product.objects.get(product_name="ananas")
+        backup_product = BackupProduct.objects.create(
+            product_code=product.code,
+            category_name=product.category.name,
+            user=test_user1
+        )
+        # Get substitutes.
+        substitutes = list(Product.get_substitutes(product.id))
+        print(backup_product.product_code)
+        print([s.code for s in substitutes])
+        self.assertFalse(
+            backup_product.product_code in [s.code for s in substitutes]
         )
 
 
@@ -229,11 +259,6 @@ class BackupProductTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         create_products(1000)
-        credentials = {
-            "username": "testuser1",
-            "email": "testuser1@free.fr",
-            "password": "1X<ISRUkw+tuK"
-        }
         BackupProduct.objects.create(
             product_code=Product.objects.order_by('?').first().code,
             category_name=Product.objects.order_by('?').first().category.name,
