@@ -4,3 +4,4 @@ psycopg2>=2.8.4
 whitenoise>=5.0.1
 requests>=2.23.0
 sentry-sdk>=0.17.6
+newrelic>=5.18.0.148
