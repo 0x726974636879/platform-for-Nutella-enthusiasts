@@ -5,4 +5,5 @@ python:
 install:
   - pip install -r src/requirements/base.txt
 script:
-  - python src/manage.py test
+    python src/manage.py collectstatic &&
+    python src/manage.py test
