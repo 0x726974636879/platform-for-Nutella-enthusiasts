@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
+
 urlpatterns = [
     path('', include('apps.core.urls'), name='core'),
     path('', include('apps.resources.urls'), name='resources'),
@@ -24,4 +29,5 @@ urlpatterns = [
 
 urlpatterns += [
     path('admin/', admin.site.urls, name='admin'),
+    path('sentry-debug/', trigger_error),
 ]

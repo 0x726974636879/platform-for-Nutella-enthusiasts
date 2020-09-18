@@ -35,6 +35,7 @@ services:
         - DJANGO_DB_PASSWORD=${POSTGRES_PASSWORD}
         - DJANGO_DB_HOST=bdd
         - DEBUG=1
+        - SENTRY_DNS=${SENTRY_DNS}
 
   adminer:
     image: adminer

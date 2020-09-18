@@ -1,5 +1,11 @@
 # Python libraries
 import os
+import logging
+#
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
+from sentry_sdk.integrations.excepthook import ExcepthookIntegration
 
 # Local libraries.
 from apps.core.utils import get_env_variable
@@ -128,3 +134,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Login urls
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
+
+
+# Specifics settings for Sentry
+sentry_sdk.init(
+    dsn=get_env_variable("SENTRY_DNS"),
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+    send_default_pii=True
+)
