@@ -141,5 +141,6 @@ sentry_sdk.init(
     dsn=get_env_variable("SENTRY_DNS"),
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
-    send_default_pii=True
+    send_default_pii=True,
+    environment=get_env_variable("ENVIRONMENT")
 )
