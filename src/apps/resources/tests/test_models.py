@@ -248,8 +248,6 @@ class ProductModelTest(TestCase):
         )
         # Get substitutes.
         substitutes = list(Product.get_substitutes(product.id))
-        print(backup_product.product_code)
-        print([s.code for s in substitutes])
         self.assertFalse(
             backup_product.product_code in [s.code for s in substitutes]
         )
