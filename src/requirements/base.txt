@@ -5,3 +5,4 @@ whitenoise>=5.0.1
 requests>=2.23.0
 sentry-sdk>=0.17.6
 newrelic>=5.18.0.148
+django-friendship==1.9.1
