@@ -7,8 +7,6 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.excepthook import ExcepthookIntegration
 
-# Local libraries.
-from apps.core.utils import get_env_variable
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,10 +15,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env_variable('DJANGO_KEY')
+SECRET_KEY = os.environ['DJANGO_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = get_env_variable('DEBUG')
+DEBUG = os.environ['DEBUG']
 
 ALLOWED_HOSTS = ['*']
 
@@ -35,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # External apps
-
+    'friendship',
     # Custom Apps
     'apps.core',
     'apps.resources',
@@ -81,10 +79,10 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_env_variable('DJANGO_DB_NAME'),
-        'USER': get_env_variable('DJANGO_DB_USER'),
-        'PASSWORD': get_env_variable('DJANGO_DB_PASSWORD'),
-        'HOST': get_env_variable('DJANGO_DB_HOST'),
+        'NAME': os.environ['DJANGO_DB_NAME'],
+        'USER': os.environ['DJANGO_DB_USER'],
+        'PASSWORD': os.environ['DJANGO_DB_PASSWORD'],
+        'HOST': os.environ['DJANGO_DB_HOST'],
         'PORT': 5432,
     }
 }
@@ -137,10 +135,10 @@ LOGIN_URL = '/login/'
 
 
 # Specifics settings for Sentry
-sentry_sdk.init(
-    dsn=get_env_variable("SENTRY_DNS"),
-    integrations=[DjangoIntegration()],
-    traces_sample_rate=1.0,
-    send_default_pii=True,
-    environment=get_env_variable("ENVIRONMENT")
-)
+# sentry_sdk.init(
+#     dsn=get_env_variable("SENTRY_DNS"),
+#     integrations=[DjangoIntegration()],
+#     traces_sample_rate=1.0,
+#     send_default_pii=True,
+#     environment=get_env_variable("ENVIRONMENT")
+# )
