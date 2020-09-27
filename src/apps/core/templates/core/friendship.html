@@ -1,0 +1,106 @@
+{% extends "layouts/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="page-section bg-info">
+    <div class="container">
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <form action="{% url 'core:search_friend' %}" class=" mb-4 form-group" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                </div>
+            {% endfor %}
+        </form>
+        {% if user_found %}
+            <form class="form-inline" action="{% url 'core:add_friend' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group mb-2">
+                    <input type="text" readonly class="form-control-plaintext" value="{{ user_found.username }}">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label class="sr-only" for="user_id">{{ user_found.username }}</label>
+                    <input  type="hidden" name="user_id" value="{{ user_found.id }}">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Ajouter en ami</button>
+            </form>
+        {% endif %}
+        <p>Pending friend requests</p>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Utilisateur</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Accepter / Refuser</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in friendship %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ obj.user.username }}</td>
+                        <td>{{ obj.message | truncatechars:15 }}</td>
+                        <td>
+                            <a href="{% url 'core:accept_friend' obj.user.id %}" class="btn btn-success">O</a>
+                            <a href="{% url 'core:reject_friend' obj.user.id %}" class="btn btn-danger">X</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>Friends</p>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Utilisateur</th>
+                    <th scope="col">Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in friends %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ obj.username }}</td>
+                        <td>
+                            <a href="{% url 'core:remove_friend' obj.id %}" class="btn btn-danger">X</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>Sent friend requests</p>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Utilisateur</th>
+                    <th scope="col">Annuler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in friendship_request_sent %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ obj.username }}</td>
+                        <td>
+                            <a href="{% url 'core:cancel_friend_request' obj.id %}" class="btn btn-danger">X</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

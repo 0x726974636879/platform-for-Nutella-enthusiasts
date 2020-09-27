@@ -1,13 +1,21 @@
+from friendship.models import Friend, FriendshipRequest
+
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import HttpResponseRedirect, render, redirect
-from django.views.generic import TemplateView
+from django.shortcuts import (
+    get_object_or_404,
+    HttpResponseRedirect,
+    render,
+    redirect
+)
+from django.views.generic import TemplateView, View
 from django.views.generic.edit import FormView
 from django.urls import reverse
 
-from .forms import LoginForm, SignUpForm
+from .forms import LoginForm, SignUpForm, SearchUserForm
+from .utils import get_friendship
 
 
 class HomePageView(TemplateView):
@@ -110,3 +118,121 @@ class LegalMentionsView(TemplateView):
     Legal mentions page view.
     """
     template_name = "core/legal_mentions.html"
+
+
+class FriendShip(LoginRequiredMixin, FormView):
+    """
+    Friendship page view.
+    """
+    form_class = SearchUserForm
+    template_name = "core/friendship.html"
+
+    def get(self, request, *args, **kwargs):
+        """
+        Get all the friendship requests.
+        """
+        kwargs.update(get_friendship(request.user))
+        return self.render_to_response(self.get_context_data(**kwargs))
+
+
+class AcceptFriendShip(LoginRequiredMixin, View):
+    template_name = "core/friendship.html"
+
+    def get(self, request, *args, **kwargs):
+        """
+        Override get method to accept a friend.
+        """
+        other_user = get_object_or_404(User, pk=kwargs["id"])
+        friend_request = FriendshipRequest.objects.get(
+            from_user=other_user, to_user=request.user
+        )
+        friend_request.accept()
+        return HttpResponseRedirect(reverse("core:friendship"))
+
+
+class RejectFriendShip(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        """
+        Override get method to reject a friend.
+        """
+        other_user = get_object_or_404(User, pk=kwargs["id"])
+        friend_request = FriendshipRequest.objects.get(
+            from_user=other_user, to_user=request.user
+        )
+        friend_request.delete()
+        return HttpResponseRedirect(reverse("core:friendship"))
+
+
+class RemoveFriendShip(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        """
+        Override get method to delete a friendship between two
+        users.
+        """
+        other_user = get_object_or_404(User, pk=kwargs["id"])
+        Friend.objects.remove_friend(self.request.user, other_user)
+        return HttpResponseRedirect(reverse("core:friendship"))
+
+
+class CancelFriendRequest(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        """
+        Override get method to cancel a friendship sent.
+        """
+        try:
+            FriendshipRequest.objects.get(id=kwargs["id"]).delete()
+        except FriendshipRequest.DoesNotExist:
+            pass
+        finally:
+            return HttpResponseRedirect(reverse("core:friendship"))
+
+
+class SearchFriend(LoginRequiredMixin, FormView):
+    template_name = "core/friendship.html"
+    form_class = SearchUserForm
+
+    def post(self, request, **kwargs):
+        """
+        Override post method to search a user.
+        """
+        form = SearchUserForm(data=request.POST)
+        kwargs.update(get_friendship(request.user))
+        context = {
+            "form": form,
+            **kwargs
+        }
+        if form.is_valid():
+            # Retrieve email and password informations.
+            username = form.cleaned_data.get("username")
+            if username != self.request.user.username:
+                # Get the user.
+                try:
+                    user = User.objects.get(username=username)
+                    context["user_found"] = user
+                except User.DoesNotExist:
+                    error_msg = f"L'utilisateur {username} n'existe pas"
+                    form.add_error("username", error_msg)
+                    return render(request, self.template_name, context)
+                return render(request, self.template_name, context)
+        return render(request, self.template_name, context)
+
+
+class AddFriend(LoginRequiredMixin, View):
+    template_name = "core/friendship.html"
+
+    def post(self, request, **kwargs):
+        """
+        Override post method to add a friend.
+        """
+        other_user = get_object_or_404(User, pk=request.POST["user_id"])
+        Friend.objects.add_friend(
+            request.user,
+            other_user,
+            message="Hey tu veux devenir mon ami ? :-)"
+        )
+        kwargs.update(get_friendship(request.user))
+        context = {
+            "form": SearchUserForm(),
+            **kwargs
+        }
+        return render(request, self.template_name, context)
