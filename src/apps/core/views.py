@@ -204,7 +204,9 @@ class SearchFriend(LoginRequiredMixin, FormView):
         if form.is_valid():
             # Retrieve email and password informations.
             username = form.cleaned_data.get("username")
-            if username != self.request.user.username:
+            friend_usernames = [f["username"] for f in context["friends"]]
+            if (username != self.request.user.username and
+                    username not in friend_usernames):
                 # Get the user.
                 try:
                     user = User.objects.get(username=username)
