@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from apps.core.forms import LoginForm, SignUpForm
+from apps.core.forms import LoginForm, SearchUserForm, SignUpForm
 
 
 class LoginFormTest(TestCase):
@@ -133,4 +133,36 @@ class SignUpFormTest(TestCase):
         credentials_ = self.credentials.copy()
         credentials_["first_name"] = f"{31 * 'a'}"
         form = LoginForm(data=credentials_)
+        self.assertFalse(form.is_valid())
+
+
+class SearchUserFormTest(TestCase):
+    def setUp(self):
+        # User to find.
+        self.user_to_find = {"username": "Patrick"}
+
+    def test_searchuser_form_field_labels(self):
+        form = SearchUserForm()
+        self.assertTrue(form.fields["username"].label == "Utilisateur")
+
+    def test_searchuser_form_field_help_texts(self):
+        form = SearchUserForm()
+        self.assertEqual(
+            form.fields["username"].help_text, "Rechercher un utilisateur"
+        )
+
+    def test_searchuser_form(self):
+        form = SearchUserForm(data=self.user_to_find)
+        print(form.errors)
+        self.assertTrue(form.is_valid())
+
+    def test_searchuser_form_without_username(self):
+        user_to_find = {}
+        form = SearchUserForm(data=user_to_find)
+        self.assertFalse(form.is_valid())
+
+    def test_searchuser_form_username_too_long(self):
+        user_to_find_ = self.user_to_find.copy()
+        user_to_find_["username"] = f"{31 * 'a'}"
+        form = SearchUserForm(data=user_to_find_)
         self.assertFalse(form.is_valid())
