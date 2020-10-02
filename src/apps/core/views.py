@@ -14,6 +14,7 @@ from django.views.generic import TemplateView, View
 from django.views.generic.edit import FormView
 from django.urls import reverse
 
+from apps.resources.models import BackupProduct, Product
 from .forms import LoginForm, SignUpForm, SearchUserForm
 from .utils import get_friendship
 
@@ -237,4 +238,35 @@ class AddFriend(LoginRequiredMixin, View):
             "form": SearchUserForm(),
             **kwargs
         }
+        return render(request, self.template_name, context)
+
+
+class FriendProductsSaved(LoginRequiredMixin, View):
+    template_name = "core/profil.html"
+
+    def get(self, request, **kwargs):
+        """"
+        Overriding GET method to show products saved by a friend.
+        """
+        other_user = get_object_or_404(User, pk=kwargs["id"])
+        friendship = Friend.objects.filter(
+            from_user=request.user, to_user=other_user
+        )
+        if not friendship:
+            return redirect("core:home")
+        bp = BackupProduct.objects.filter(user=other_user)\
+            .values_list("product_code", "category_name")
+        products = [
+            Product.objects.filter(code=b[0], category__name=b[1]).first()
+            for b in bp
+        ]
+        context = {
+            "friend": {
+                "name": other_user.username,
+                "email": other_user,
+                "products": products
+            }
+        }
+        request.user.username = other_user.username
+        request.user.email = other_user.email
         return render(request, self.template_name, context)
