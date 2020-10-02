@@ -44,5 +44,10 @@ urlpatterns = [
         "friends/<int:id>/cancel_friend_request",
         views.CancelFriendRequest.as_view(),
         name="cancel_friend_request"
+    ),
+    path(
+        "friends/<int:id>/products_saved",
+        views.FriendProductsSaved.as_view(),
+        name="friend_products_saved"
     )
 ]
