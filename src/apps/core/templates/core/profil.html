@@ -4,10 +4,12 @@
 {% block content %}
 <section class="page-section bg-dark text-white" style="background-image: url({% static 'images/remy/ratatouille-11.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;">
     <div class="container text-center" >
-        <h2 class="text-dark mb-4 bg-white">{{ product.product_name }}</h2>
+        {% if friend %}
         <div class="row">
-            <p class="col-4 offset-4 mt-auto mb-auto text-dark bg-white">{{ user.username }}</p>
+            <p class="col-4 offset-4 mt-auto mb-auto text-dark bg-white">Vous regardez le profil de:</p>
         </div>
+        {% endif %}
+        <h2 class="text-dark mb-4 bg-white">{{ user.username }}</h2>
     </div>
 </section>
 <h3 class="text-center my-5">{{ user.email }}</h3>
@@ -20,5 +22,25 @@
             </div>
         </div>
     </div>
+    {% if friend %}
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in friend.products %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a href="{% url 'resources:products_list' product.id %}">{{ product.product_name }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
 </section>
 {% endblock content %}
