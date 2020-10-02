@@ -49,7 +49,7 @@
                 {% for obj in friendship %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ obj.user.username }}</td>
+                        <td><a href="{% url 'core:friend_products_saved' obj.user.id %}">{{ obj.user.username }}</a></td>
                         <td>{{ obj.message | truncatechars:15 }}</td>
                         <td>
                             <a href="{% url 'core:accept_friend' obj.user.id %}" class="btn btn-success">O</a>
@@ -72,7 +72,7 @@
                 {% for obj in friends %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ obj.username }}</td>
+                        <td><a href="{% url 'core:friend_products_saved' obj.id %}">{{ obj.username }}</a></td>
                         <td>
                             <a href="{% url 'core:remove_friend' obj.id %}" class="btn btn-danger">X</a>
                         </td>
@@ -93,7 +93,7 @@
                 {% for obj in friendship_request_sent %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ obj.username }}</td>
+                        <td><a href="{% url 'core:friend_products_saved' obj.id %}">{{ obj.username }}</a></td>
                         <td>
                             <a href="{% url 'core:cancel_friend_request' obj.id %}" class="btn btn-danger">X</a>
                         </td>
