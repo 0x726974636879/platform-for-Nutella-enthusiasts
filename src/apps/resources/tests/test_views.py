@@ -1,64 +1,10 @@
-import random
-import string
-
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.resources.models import Category, BackupProduct, Product
-from .utils import credentials
-
-
-def random_string(string_length=8):
-    """
-    Generate a random string with a predefine length.
-
-    Parameters
-    ----------
-    string_length : int
-        Length of the sequence.
-        If no length given a sequence of 8 characters will be
-        generate.
-
-    Returns
-    -------
-        : str
-        Random sequence of characters.
-    """
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(string_length))
-
-
-def create_products(nb_product):
-    """
-    Create x products with x categories.
-
-    Parameters
-    ----------
-    nb_product : int
-        Number of products you wish to create
-    """
-    grades = ('a', 'b', 'c', 'd', 'e')
-    category = Category.objects.create(name="category_a")
-    products = []
-    for _ in range(nb_product):
-        products.append(
-            Product(
-                product_name=f"product_{random_string()}",
-                code=random_string(20),
-                img_url=random_string(100),
-                url=random_string(100),
-                salt=random_string(),
-                fat=random_string(),
-                sugars=random_string(),
-                saturated_fat=random_string(),
-                warehouse=random_string(100),
-                allergens=random_string(100),
-                nutrition_grades=random.choice(grades),
-                category=category
-            )
-        )
-    Product.objects.bulk_create(products)
+from apps.resources.models import BackupProduct, Product
+from .constants import CREDENTIALS
+from .utils import create_products
 
 
 class ShowProductViewTest(TestCase):
@@ -167,7 +113,7 @@ class SavedProductsListViewTest(TestCase):
         # Create products.
         create_products(10)
         # Create user.
-        test_user1 = User.objects.create_user(**credentials)
+        test_user1 = User.objects.create_user(**CREDENTIALS)
         test_user1.save()
         # Create product saved by the user.
         for product in Product.objects.all()[:5]:
@@ -178,17 +124,17 @@ class SavedProductsListViewTest(TestCase):
             )
 
     def test_view_url_exists(self):
-        _ = self.client.login(**credentials)
+        _ = self.client.login(**CREDENTIALS)
         response = self.client.get("/products/saved/")
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        _ = self.client.login(**credentials)
+        _ = self.client.login(**CREDENTIALS)
         response = self.client.get(reverse("resources:products_saved"))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        _ = self.client.login(**credentials)
+        _ = self.client.login(**CREDENTIALS)
         response = self.client.get(reverse("resources:products_saved"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "resources/products_saved.html")
@@ -198,7 +144,7 @@ class SavedProductsListViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_redirect_if_product_saved(self):
-        _ = self.client.login(**credentials)
+        _ = self.client.login(**CREDENTIALS)
         user = User.objects.all().first()
         response = self.client.get(reverse("resources:products_saved"))
         self.assertEqual(response.status_code, 200)
@@ -217,33 +163,33 @@ class SaveProductViewTest(TestCase):
         # Create products.
         create_products(10)
         # Create user.
-        test_user1 = User.objects.create_user(**credentials)
+        test_user1 = User.objects.create_user(**CREDENTIALS)
         test_user1.save()
 
     def test_save_product_with_url(self):
         product_id = Product.objects.order_by('?').first().id
-        self.client.login(**credentials)
+        self.client.login(**CREDENTIALS)
         self.client.post(
             "/products/save/",
             {"product_id": product_id}
         )
         self.assertEqual(
             BackupProduct.objects.filter(
-                user=User.objects.get(username=credentials["username"])
+                user=User.objects.get(username=CREDENTIALS["username"])
             ).count(),
             1
         )
 
     def test_save_product_by_url_name(self):
         product_id = Product.objects.order_by('?').first().id
-        self.client.login(**credentials)
+        self.client.login(**CREDENTIALS)
         self.client.post(
             reverse("resources:products_save"),
             {"product_id": product_id}
         )
         self.assertEqual(
             BackupProduct.objects.filter(
-                user=User.objects.get(username=credentials["username"])
+                user=User.objects.get(username=CREDENTIALS["username"])
             ).count(),
             1
         )
@@ -255,7 +201,7 @@ class SaveProductViewTest(TestCase):
         )
         self.assertNotEqual(
             BackupProduct.objects.filter(
-                user=User.objects.get(username=credentials["username"])
+                user=User.objects.get(username=CREDENTIALS["username"])
             ).count(),
             1
         )
