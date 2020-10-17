@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from apps.resources.models import Category, BackupProduct, Product
-from .utils import credentials
+from .constants import CREDENTIALS
 
 
 def random_string(string_length=8):
@@ -233,11 +233,11 @@ class ProductModelTest(TestCase):
             )
         Product.objects.bulk_create(products)
         # Create a user.
-        test_user1 = User.objects.create_user(**credentials)
+        test_user1 = User.objects.create_user(**CREDENTIALS)
         test_user1.save()
         # Log in.
         self.client.login(
-            email=credentials["email"], password=credentials["password"]
+            email=CREDENTIALS["email"], password=CREDENTIALS["password"]
         )
         # Save a product.
         product = Product.objects.get(product_name="ananas")
@@ -260,7 +260,7 @@ class BackupProductTest(TestCase):
         BackupProduct.objects.create(
             product_code=Product.objects.order_by('?').first().code,
             category_name=Product.objects.order_by('?').first().category.name,
-            user=User.objects.create_user(**credentials)
+            user=User.objects.create_user(**CREDENTIALS)
         )
 
     def test_product_code_label(self):
