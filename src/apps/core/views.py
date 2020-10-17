@@ -215,7 +215,7 @@ class SearchFriend(LoginRequiredMixin, FormView):
                 except User.DoesNotExist:
                     error_msg = f"L'utilisateur {username} n'existe pas"
                     form.add_error("username", error_msg)
-                    return render(request, self.template_name, context)
+                    return render(request, self.template_name, context, status=404)
                 return render(request, self.template_name, context)
         return render(request, self.template_name, context)
 
@@ -241,7 +241,7 @@ class AddFriend(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
-class FriendProductsSaved(LoginRequiredMixin, View):
+class FriendProductsSaved(LoginRequiredMixin, TemplateView):
     template_name = "core/profil.html"
 
     def get(self, request, **kwargs):
@@ -253,7 +253,7 @@ class FriendProductsSaved(LoginRequiredMixin, View):
             from_user=request.user, to_user=other_user
         )
         if not friendship:
-            return redirect("core:home")
+            return render(request, "core/index.html", status=404)
         bp = BackupProduct.objects.filter(user=other_user)\
             .values_list("product_code", "category_name")
         products = [
@@ -269,4 +269,4 @@ class FriendProductsSaved(LoginRequiredMixin, View):
         }
         request.user.username = other_user.username
         request.user.email = other_user.email
-        return render(request, self.template_name, context)
+        return self.render_to_response(self.get_context_data(**context))
